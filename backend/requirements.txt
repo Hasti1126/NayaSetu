@@ -1,12 +1,9 @@
 uvicorn[standard]==0.29.0
 python-multipart==0.0.9
-ollama==0.2.1
 lxml==5.2.2
 pymupdf==1.24.5
 pysqlite3-binary
 numpy==1.26.4
-
-
 APScheduler==3.10.4
 beautifulsoup4==4.14.3
 chromadb==0.4.24
