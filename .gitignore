@@ -25,3 +25,5 @@ Thumbs.db
 # IDE
 .vscode/settings.json
 .idea/
+.env.local
+.env.production

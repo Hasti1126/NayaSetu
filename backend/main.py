@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 # main.py — NyaySetu FastAPI Backend
 # Serves RAG pipeline via REST API with SSE streaming
 
@@ -47,7 +49,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -92,15 +94,13 @@ def root():
 @app.get("/api/status")
 def status():
     """System status — DB stats, model availability."""
-    from rag.reasoner import get_available_model
     db_stats = get_stats()
-    model = get_available_model()
     return {
         "status": "ok",
         "db": db_stats,
-        "ollama_model": model,
-        "ollama_available": model is not None,
-        "ready": model is not None and db_stats.get("total_chunks", 0) > 0,
+        "model": "llama-3.3-70b-versatile (Groq)",
+        "ollama_available": True,
+        "ready": db_stats.get("total_chunks", 0) > 0,
     }
 
 
@@ -218,3 +218,15 @@ async def trigger_pipeline():
     """Manually trigger the scrape + embed pipeline."""
     asyncio.create_task(run_pipeline())
     return {"message": "Pipeline started in background"}
+
+@app.post("/api/ask/simple")
+async def ask_simple(request: QuestionRequest):
+    """Non-streaming version — works better in Codespaces."""
+    result = await answer_legal_question(request.question)
+    return result
+
+@app.post("/api/analyze/simple")
+async def analyze_simple(request: TextAnalysisRequest):
+    """Non-streaming version — works better in Codespaces."""
+    result = await analyze_document_rag(request.text, request.doc_name)
+    return result
