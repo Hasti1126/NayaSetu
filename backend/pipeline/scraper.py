@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, date
 from loguru import logger
 from tenacity import retry, stop_after_attempt, wait_exponential
-
+import os
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; NyaySetu/1.0)",
     "Accept": "text/html,application/xhtml+xml",
@@ -23,9 +23,30 @@ CORE_LAWS = [
     {"name": "RERA Act 2016", "url": "https://indiankanoon.org/doc/120763531/", "type": "statute"},
 ]
 
+# @retry(stop=stop_after_attempt(2), wait=wait_exponential(min=1, max=4))
+# async def fetch(client, url):
+#     r = await client.get(url, headers=HEADERS, timeout=10.0, follow_redirects=True)
+#     r.raise_for_status()
+#     return r.text
+
+
+SCRAPER_API_KEY = os.getenv("SCRAPER_API_KEY")
+
 @retry(stop=stop_after_attempt(2), wait=wait_exponential(min=1, max=4))
 async def fetch(client, url):
-    r = await client.get(url, headers=HEADERS, timeout=10.0, follow_redirects=True)
+    if SCRAPER_API_KEY:
+        proxy_url = f"http://api.scraperapi.com/?api_key={SCRAPER_API_KEY}&url={url}"
+    else:
+        proxy_url = url  # fallback for local/dev
+
+    logger.info(f"Fetching: {url}")
+
+    r = await client.get(
+        proxy_url,
+        headers=HEADERS,
+        timeout=20.0,
+        follow_redirects=True
+    )
     r.raise_for_status()
     return r.text
 
