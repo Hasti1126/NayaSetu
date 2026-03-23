@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
-const API = import.meta.env.VITE_API_URL || "";
+// const API = import.meta.env.VITE_API_URL || "";
+const API = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 // ── SSE streaming helper ──────────────────────────────────────────────────────
 async function streamSSE(url, body, onProgress, onResult) {
