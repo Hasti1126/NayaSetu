@@ -170,7 +170,7 @@ NyaySetu/
 
 **Solution:** NyaySetu — daily-updated Indian law database + LLM reasoning, accessible to anyone with a phone.
 
-**Why it's real AI:** The panel will ask *"How is the knowledge current?"*
+**Why it's real AI:** *"How is the knowledge current?"*
 
 Answer: *"ChromaDB is re-embedded every morning at 2 AM IST from live indiankanoon.org. The LLM never answers from training data alone — every response is grounded in retrieved law chunks with source URLs and scrape dates."*
 
