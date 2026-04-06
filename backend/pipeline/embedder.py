@@ -5,13 +5,21 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import chromadb
 from loguru import logger
 from pathlib import Path
-
-DB_PATH = Path(__file__).parent.parent / "db" / "chroma"
+import chromadb
+# DB_PATH = Path(__file__).parent.parent / "db" / "chroma"
 COLLECTION_NAME = "indian_law"
 
+# def get_db():
+#     DB_PATH.mkdir(parents=True, exist_ok=True)
+#     return chromadb.PersistentClient(path=str(DB_PATH))
+
+
 def get_db():
-    DB_PATH.mkdir(parents=True, exist_ok=True)
-    return chromadb.PersistentClient(path=str(DB_PATH))
+    return chromadb.CloudClient(
+        api_key=os.environ["CHROMA_API_KEY"],
+        tenant=os.environ["CHROMA_TENANT"],
+        database=os.environ["CHROMA_DATABASE"],
+    )
 
 def get_collection():
     client = get_db()
@@ -70,6 +78,17 @@ def retrieve(query: str, n_results: int = 5, doc_type: str = None) -> list[dict]
         })
     return chunks
 
+# def get_stats() -> dict:
+#     try:
+#         collection = get_collection()
+#         return {
+#             "total_chunks": collection.count(),
+#             "collection": COLLECTION_NAME,
+#             "embedding_model": "ChromaDB Built-in",
+#             "db_path": str(DB_PATH),
+#         }
+#     except Exception as e:
+#         return {"error": str(e), "total_chunks": 0}
 def get_stats() -> dict:
     try:
         collection = get_collection()
@@ -77,7 +96,7 @@ def get_stats() -> dict:
             "total_chunks": collection.count(),
             "collection": COLLECTION_NAME,
             "embedding_model": "ChromaDB Built-in",
-            "db_path": str(DB_PATH),
+            "db_path": "Chroma Cloud",  # no local path anymore
         }
     except Exception as e:
         return {"error": str(e), "total_chunks": 0}
