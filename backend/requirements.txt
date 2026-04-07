@@ -6,7 +6,7 @@ pysqlite3-binary
 numpy==1.26.4
 APScheduler==3.10.4
 beautifulsoup4==4.12.3
-chromadb==0.4.24
+chromadb>=0.6.0
 fastapi==0.135.1
 groq==1.0.0
 httpx==0.28.1
