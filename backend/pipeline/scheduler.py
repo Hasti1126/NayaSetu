@@ -7,16 +7,18 @@ from loguru import logger
 from pipeline.scraper import run_scraper
 from pipeline.embedder import upsert_documents, get_stats
 
-# For selective chunk deletion when a law changes
-_chroma = chromadb.PersistentClient(path="./chroma_db")
-_collection = _chroma.get_or_create_collection(
-    name="indian_laws",
-    metadata={"hnsw:space": "cosine"},
-)
+# # For selective chunk deletion when a law changes
+# _chroma = chromadb.PersistentClient(path="./chroma_db")
+# _collection = _chroma.get_or_create_collection(
+#     name="indian_laws",
+#     metadata={"hnsw:space": "cosine"},
+# )
 
 def _delete_law_chunks(law_name: str):
     try:
-        _collection.delete(where={"source": law_name})
+        from pipeline.embedder import get_collection
+        collection = get_collection()  # ✅ uses Cloud
+        collection.delete(where={"source": law_name})
         logger.info(f"🗑️  Cleared old chunks for: {law_name}")
     except Exception as e:
         logger.warning(f"Could not clear chunks for {law_name}: {e}")
