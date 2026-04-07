@@ -200,15 +200,15 @@ async def analyze_document_rag(
 
 async def answer_legal_question(question: str, on_progress=None) -> dict:
     if is_prompt_injection(question):
-    return {
-        "answer_english": "I can only assist with questions related to Indian law.",
-        "answer_hindi": "मैं केवल भारतीय कानून से संबंधित प्रश्नों में सहायता कर सकता हूँ।",
-        "applicable_laws": [],
-        "practical_advice": "",
-        "confidence": "High",
-        "retrieved_chunks": [],
-        "model_used": "llama3-70b (Groq)",
-    }
+        return {
+            "answer_english": "I can only assist with questions related to Indian law.",
+            "answer_hindi": "मैं केवल भारतीय कानून से संबंधित प्रश्नों में सहायता कर सकता हूँ।",
+            "applicable_laws": [],
+            "practical_advice": "",
+            "confidence": "High",
+            "retrieved_chunks": [],
+            "model_used": "llama3-70b (Groq)",
+        }
     if on_progress:
         await on_progress("🔎 Searching Indian law database...", 20)
     chunks = retrieve(question, n_results=5)
