@@ -1,6 +1,7 @@
 __import__('pysqlite3')
 import sys
 import os
+import time
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import chromadb
@@ -36,7 +37,7 @@ def upsert_documents(documents: list[dict]):
         logger.warning("No documents to upsert")
         return
     collection = get_collection()
-    batch_size = 100
+    batch_size = 25          # ✅ smaller batches
     total = 0
     for i in range(0, len(documents), batch_size):
         batch = documents[i:i + batch_size]
@@ -49,6 +50,8 @@ def upsert_documents(documents: list[dict]):
             metadatas.append(doc["metadata"])
         collection.upsert(ids=ids, documents=texts, metadatas=metadatas)
         total += len(batch)
+        time.sleep(1)        # ✅ RAM recovery
+        logger.info(f"📦 Batch done — {total}/{len(documents)} chunks upserted")
     logger.info(f"✅ Upserted {total} chunks. Total in DB: {collection.count()}")
 
 def retrieve(query: str, n_results: int = 5, doc_type: str = None) -> list[dict]:
