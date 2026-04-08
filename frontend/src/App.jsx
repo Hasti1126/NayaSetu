@@ -215,7 +215,7 @@ function QAResult({ result, lang }) {
         <div style={{ marginBottom: 12 }}>
           <div style={{ fontSize: 11, fontWeight: 800, color: "#7A6E60", letterSpacing: 0.5, marginBottom: 6 }}>APPLICABLE LAWS</div>
           {result.applicable_laws.map((l, i) => (
-            
+            <a
               key={i}
               href={`https://indiankanoon.org/search/?formInput=${encodeURIComponent(l)}`}
               target="_blank"
