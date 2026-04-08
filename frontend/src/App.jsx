@@ -203,7 +203,7 @@ function DocumentResult({ result, lang, onReset }) {
 function QAResult({ result, lang }) {
   return (
     <div style={{ background: "white", border: "1px solid #E2D9C8", borderRadius: 14, padding: 20, marginTop: 16 }}>
-      <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 17, color: "#1A1208", marginBottom: 12, lineHeight: 1.5 }}>
+    <div style={{ fontFamily: "Mukta, sans-serif", fontWeight: 400, fontSize: 15, color: "#1A1208", marginBottom: 12, lineHeight: 1.8 }}>
         {lang === "hi" ? result.answer_hindi || result.answer_english : result.answer_english}
       </div>
       {result.practical_advice && (
@@ -215,7 +215,17 @@ function QAResult({ result, lang }) {
         <div style={{ marginBottom: 12 }}>
           <div style={{ fontSize: 11, fontWeight: 800, color: "#7A6E60", letterSpacing: 0.5, marginBottom: 6 }}>APPLICABLE LAWS</div>
           {result.applicable_laws.map((l, i) => (
-            <div key={i} style={{ fontSize: 12, color: "#1A6B3C", marginBottom: 3 }}>⚖️ {l}</div>
+            
+              key={i}
+              href={`https://indiankanoon.org/search/?formInput=${encodeURIComponent(l)}`}
+              target="_blank"
+              rel="noreferrer"
+              style={{ display: "block", fontSize: 12, color: "#1A6B3C", marginBottom: 3, textDecoration: "none", cursor: "pointer" }}
+              onMouseEnter={e => e.target.style.textDecoration = "underline"}
+              onMouseLeave={e => e.target.style.textDecoration = "none"}
+            >
+              ⚖️ {l}
+            </a>
           ))}
         </div>
       )}
