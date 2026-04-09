@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     stats = get_stats()
     if stats.get("total_chunks", 0) == 0:
         logger.info("📭 DB is empty — running initial pipeline...")
-        asyncio.create_task(run_pipeline())
+        # asyncio.create_task(run_pipeline())
     else:
         logger.info(f"📚 DB has {stats['total_chunks']} law chunks ready")
 
