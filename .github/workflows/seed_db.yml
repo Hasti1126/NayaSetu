@@ -1,0 +1,29 @@
+name: Seed ChromaDB
+
+on:
+  workflow_dispatch:  # manual trigger
+  schedule:
+    - cron: '0 2 * * 0'  # every Sunday 2AM
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+      
+      - name: Run scraper and embed
+        env:
+          CHROMA_API_KEY: ${{ secrets.CHROMA_API_KEY }}
+          CHROMA_TENANT: ${{ secrets.CHROMA_TENANT }}
+          CHROMA_DATABASE: ${{ secrets.CHROMA_DATABASE }}
+          SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
+        run: |
+          cd backend
+          python -c "import asyncio; from pipeline.scheduler import run_pipeline; asyncio.run(run_pipeline())"
