@@ -93,6 +93,24 @@ function ClauseCard({ clause, lang }) {
 
 // ── Document result view ──────────────────────────────────────────────────────
 function DocumentResult({ result, lang, onReset }) {
+    if (result.not_legal) {
+    return (
+      <div style={{ textAlign: "center", padding: 40, background: "white", borderRadius: 16, border: "1px solid #E2D9C8" }}>
+        <div style={{ fontSize: 48, marginBottom: 16 }}>📋</div>
+        <div style={{ fontFamily: "Fraunces, serif", fontWeight: 800, fontSize: 20, color: "#1A1208", marginBottom: 8 }}>
+          Not a Legal Document
+        </div>
+        <div style={{ color: "#7A6E60", fontSize: 14, marginBottom: 20 }}>
+          {lang === "hi"
+            ? "यह कानूनी दस्तावेज़ नहीं है। कृपया कोई अनुबंध या समझौता अपलोड करें।"
+            : "This doesn't appear to be a legal document. Please upload a contract, agreement, or legal notice."}
+        </div>
+        <button onClick={onReset} style={{ padding: "10px 24px", borderRadius: 12, background: "#C8102E", color: "white", fontWeight: 700, border: "none", cursor: "pointer", fontFamily: "Mukta, sans-serif" }}>
+          ← Try Another Document
+        </button>
+      </div>
+    )
+  }
   const { verdict, summary, dangers, warnings, safe_clauses } = result;
   const [tab, setTab] = useState("dangers");
   const riskColor = summary.risk_score >= 60 ? "#C8102E" : summary.risk_score >= 30 ? "#B8860B" : "#1A6B3C";
