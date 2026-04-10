@@ -164,24 +164,24 @@ async def analyze_document_rag(
         await on_progress("🔍 Pass 1: Extracting clauses...", 10)
     clauses = extract_clauses(document_text)
     if clauses == ["NOT_LEGAL_DOCUMENT"]:
-    return {
-        "model_used": "llama3-70b (Groq)",
-        "passes": 1,
-        "doc_name": doc_name,
-        "not_legal": True,
-        "verdict": {
-            "should_sign": None,
-            "overall_risk": "N/A",
-            "risk_score": 0,
-            "verdict_english": "This does not appear to be a legal document. NyaySetu only analyzes contracts, agreements, notices, and legal deeds.",
-            "verdict_hindi": "यह कानूनी दस्तावेज़ नहीं है। NyaySetu केवल अनुबंध और कानूनी दस्तावेज़ों का विश्लेषण करता है।",
-            "top_3_urgent": [],
-            "key_rights": []
-        },
-        "clause_analyses": [],
-        "summary": {"total_clauses": 0, "danger_count": 0, "warning_count": 0, "safe_count": 0, "risk_score": 0},
-        "dangers": [], "warnings": [], "safe_clauses": [],
-    }
+        return {
+            "model_used": "llama3-70b (Groq)",
+            "passes": 1,
+            "doc_name": doc_name,
+            "not_legal": True,
+            "verdict": {
+                "should_sign": None,
+                "overall_risk": "N/A",
+                "risk_score": 0,
+                "verdict_english": "This does not appear to be a legal document. NyaySetu only analyzes contracts, agreements, notices, and legal deeds.",
+                "verdict_hindi": "यह कानूनी दस्तावेज़ नहीं है। NyaySetu केवल अनुबंध और कानूनी दस्तावेज़ों का विश्लेषण करता है।",
+                "top_3_urgent": [],
+                "key_rights": []
+            },
+            "clause_analyses": [],
+            "summary": {"total_clauses": 0, "danger_count": 0, "warning_count": 0, "safe_count": 0, "risk_score": 0},
+            "dangers": [], "warnings": [], "safe_clauses": [],
+        }
 
     clause_analyses = []
     for i, clause in enumerate(clauses[:10]):
